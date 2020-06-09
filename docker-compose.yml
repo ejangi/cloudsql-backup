@@ -1,0 +1,13 @@
+version: '3.2'
+services:
+  app:
+    build:
+      context: .
+    environment: 
+      PORT: 3000
+      _GS_BUCKET_NAME: "ejangi-private"
+      _SQL_INSTANCE_NAME: "dolcestrings:australia-southeast1:mysql"
+      _SQL_DATABASES: "dolcestrings dolcestrings_wp reasonablefaith_wp"
+    ports:
+      - 3000:3000
+    restart: always

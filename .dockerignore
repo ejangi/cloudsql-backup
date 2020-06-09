@@ -1,0 +1,8 @@
+.DS_Store
+Dockerfile
+README.md
+LICENSE.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__
