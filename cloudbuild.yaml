@@ -1,0 +1,25 @@
+steps:
+    # Decrypt the service-account.json file:
+    - name: gcr.io/cloud-builders/gcloud
+      args:
+      - kms
+      - decrypt
+      - --ciphertext-file=Docker/service-account.json.enc
+      - --plaintext-file=Docker/service-account.json
+      - --location=australia-southeast1
+      - --keyring=secrets
+      - --key=build-key
+
+    # Build and tag the image.
+    - name: 'gcr.io/cloud-builders/docker'
+      id: Build
+      args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/cloudsql-backup:$REVISION_ID', '.' ]
+    
+    - name: 'gcr.io/cloud-builders/docker'
+      id: Push
+      args: ['push', 'gcr.io/$PROJECT_ID/cloudsql-backup:$REVISION_ID']
+    
+    # Deploy
+    - name: 'gcr.io/cloud-builders/gcloud'
+      id: Deploy
+      args: [ 'run', 'deploy', 'cloudsql-backup', '--image', 'gcr.io/$PROJECT_ID/cloudsql-backup:$REVISION_ID', '--platform', 'managed', '--region', '${_REGION}' ]
