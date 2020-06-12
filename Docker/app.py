@@ -11,7 +11,7 @@ def index():
 
 @app.route('/backup')
 def backup():
-    subprocess.Popen("/usr/bin/backup.sh")
+    subprocess.call("/usr/bin/backup.sh")
     return {"status":"ok"}
 
 if __name__ == "__main__":
